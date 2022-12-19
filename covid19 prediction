@@ -1,0 +1,24 @@
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+# Load the COVID-19 cases data into a pandas dataframe
+df = pd.read_csv('covid19_cases.csv')
+
+# Split the data into features (X) and target (y)
+X = df[['day_number']]
+y = df['number_of_cases']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train the model using linear regression
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Predict the number of cases for the next 90 days
+predictions = model.predict(np.arange(X['day_number'].max(), X['day_number'].max()+90).reshape(-1,1))
+
+# Print the predictions
+print(predictions)
